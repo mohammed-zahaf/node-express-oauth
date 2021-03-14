@@ -50,13 +50,35 @@ app.use(timeout)
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-/*
-Your code here
-*/
+app.get('/authorize', (req, res) => {
+	const clientId = req.query['client_id'];
+	const client = clients[clientId];
+	if (!client) {
+		res.status(401).send("Error: client not authorized");
+		return;
+	}
+
+	const scope = req.query['scope'];
+	const scopes = scope.split(" ");
+	if (!containsAll(client.scopes, scopes)) {
+		res.status(401).send("Error: invalid scopes requested");
+		return;
+	}
+
+	const requestId = randomString();
+	requests[requestId] = req.query;
+	res.render("login", {
+		client,
+		scope,
+		requestId
+	});
+});
 
 const server = app.listen(config.port, "localhost", function () {
-	var host = server.address().address
-	var port = server.address().port
+	const host = server.address().address;
+	const port = server.address().port;
+
+	console.log('ZM:: NODE SERVER RUNNING IN PORT', port);
 })
 
 // for testing purposes
