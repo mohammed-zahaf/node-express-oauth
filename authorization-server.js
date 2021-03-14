@@ -79,6 +79,14 @@ app.post('/approve', (req, res) => {
 	const userPassword = users[userName];
 	if (password !== userPassword) {
 		res.status(401).send('Error: userName or password are not correct!');
+		return;
+	}
+
+	const request = requests[requestId];
+	delete requests[requestId];
+	if (!request) {
+		res.status(401).send('Error: The request id was not found!');
+		return;
 	}
 
 
