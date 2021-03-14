@@ -82,14 +82,18 @@ app.post('/approve', (req, res) => {
 		return;
 	}
 
-	const request = requests[requestId];
+	const clientReq = requests[requestId];
 	delete requests[requestId];
-	if (!request) {
+	if (!clientReq) {
 		res.status(401).send('Error: The request id was not found!');
 		return;
 	}
 
-
+	const randStringId = randomString();
+	authorizationCodes[randStringId] = {
+		userName,
+		clientReq
+	};
 });
 
 const server = app.listen(config.port, "localhost", function () {
