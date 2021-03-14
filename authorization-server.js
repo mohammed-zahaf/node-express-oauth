@@ -74,6 +74,10 @@ app.get('/authorize', (req, res) => {
 	});
 });
 
+app.post('/approve', (req, res) => {
+
+});
+
 const server = app.listen(config.port, "localhost", function () {
 	const host = server.address().address;
 	const port = server.address().port;
