@@ -75,6 +75,12 @@ app.get('/authorize', (req, res) => {
 });
 
 app.post('/approve', (req, res) => {
+	const { userName, password, requestId } =  req.body;
+	const userPassword = users[userName];
+	if (password !== userPassword) {
+		res.status(401).send('Error: userName or password are not correct!');
+	}
+
 
 });
 
