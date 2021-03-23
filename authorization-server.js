@@ -1,7 +1,8 @@
-const fs = require("fs")
-const express = require("express")
-const bodyParser = require("body-parser")
-const jwt = require("jsonwebtoken")
+const fs = require("fs");
+const express = require("express");
+const bodyParser = require("body-parser");
+const jwt = require("jsonwebtoken");
+
 const {
 	randomString,
 	containsAll,
@@ -94,6 +95,11 @@ app.post('/approve', (req, res) => {
 		userName,
 		clientReq
 	};
+
+	const url = new URL(clientReq.redirect_uri);
+	url.searchParams.append('code', randStringId);
+	url.searchParams.append('state', clientReq.state);
+	res.redirect(url.href);
 });
 
 const server = app.listen(config.port, "localhost", function () {
