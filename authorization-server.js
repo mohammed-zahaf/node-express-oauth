@@ -103,6 +103,12 @@ app.post('/approve', (req, res) => {
 });
 
 app.post('/token', (req, res) => {
+	const authorization = req.headers
+
+	if (!authorization) {
+		res.status(401).send("Authorization token doesn't exist'");
+	}
+
 	res.status(200);
 })
 
