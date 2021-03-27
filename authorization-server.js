@@ -102,6 +102,10 @@ app.post('/approve', (req, res) => {
 	res.redirect(url.href);
 });
 
+app.post('/token', (req, res) => {
+	res.status(200);
+})
+
 const server = app.listen(config.port, "localhost", function () {
 	const host = server.address().address;
 	const port = server.address().port;
