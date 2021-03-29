@@ -133,6 +133,11 @@ app.post('/token', (req, res) => {
 	};
 	const token = jwt.sign(payload, config.privateKey, tokenConfig);
 
+	res.json({
+		access_token: token,
+		token_type: "Bearer",
+		scope: clientReq.scope,
+	});
 })
 
 const server = app.listen(config.port, "localhost", function () {
