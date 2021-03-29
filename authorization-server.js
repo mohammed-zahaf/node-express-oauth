@@ -106,18 +106,24 @@ app.post('/token', (req, res) => {
 	const { authorization } = req.headers;
 
 	if (!authorization) {
-		res.status(401).send("Authorization token doesn't exist");
+		res.status(401).send("Error: not authorized!");
 		return;
 	}
 
 	const { clientId, clientSecret } = decodeAuthCredentials(authorization);
 	const client = clients[clientId];
 	if (!client || client.clientSecret !== clientSecret) {
-		res.status(401).send('Bad authorization code!');
+		res.status(401).send("Error: client not authorized!");
 		return;
 	}
 
-	res.status(200);
+	const { code } = req.body;
+	if (!code || !authorizationCodes[code]) {
+		res.status(401).send("Error: invalid code!");
+		return;
+	}
+
+	//res.status(200);
 })
 
 const server = app.listen(config.port, "localhost", function () {
