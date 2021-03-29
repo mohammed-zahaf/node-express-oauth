@@ -123,7 +123,16 @@ app.post('/token', (req, res) => {
 		return;
 	}
 
-	//res.status(200);
+	const { clientReq, userName } = authorizationCodes[code]
+	delete authorizationCodes[code];
+	const payload = {userName, scope: clientReq.scope};
+	const tokenConfig = {
+		algorithm: "RS256",
+		expiresIn: 300,
+		issuer: "http://localhost:" + config.port,
+	};
+	const token = jwt.sign(payload, config.privateKey, tokenConfig);
+
 })
 
 const server = app.listen(config.port, "localhost", function () {
